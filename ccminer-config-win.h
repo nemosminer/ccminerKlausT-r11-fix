@@ -156,7 +156,7 @@
 #define PACKAGE_NAME "ccminer"
 
 /* Define to the full name and version of this package. */
-#define PACKAGE_STRING "ccminer 8.21-KlausT"
+#define PACKAGE_STRING "yescrypt/R16/R32/cuda10"
 
 /* Define to the one symbol short name of this package. */
 #define PACKAGE_TARNAME "ccminer"
@@ -165,7 +165,7 @@
 #define PACKAGE_URL ""
 
 /* Define to the version of this package. */
-#define PACKAGE_VERSION "8.21-KlausT-r11-fix"
+#define PACKAGE_VERSION "yescrypt/R16/R32/cuda10"
 
 /* If using the C implementation of alloca, define if you know the
    direction of stack growth for your system; otherwise it will be
