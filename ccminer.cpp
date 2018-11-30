@@ -95,7 +95,6 @@ bool opt_debug_diff = false;
 bool opt_debug_threads = false;
 bool opt_showdiff = true;
 bool opt_hwmonitor = true;
-bool opt_submit_stale = false;
 
 const char *algo_names[] =
 {
@@ -319,10 +318,8 @@ Options:\n\
                           (default: retry indefinitely)\n\
   -R, --retry-pause=N   time to pause between retries, in seconds (default: 30)\n\
   -T, --timeout=N       network timeout, in seconds (default: 270)\n\
-      --submit-stale    ignore stale jobs checks, may create more rejected shares\n\
   -s, --scantime=N      upper bound on time spent scanning current work when\n\
                           long polling is unavailable, in seconds (default: 5)\n"
-	
 #ifndef ORG
 	"\
       --eco             use eco mode (Lyra2REv2 only)\n\
@@ -417,8 +414,6 @@ static struct option const options[] =
 	{"devices", 1, NULL, 'd'},
 	{"diff-multiplier", 1, NULL, 'm'},
 	{"diff-factor", 1, NULL, 'f'},
-	{ "show-diff", 0, NULL, 1013 }, // deprecated
-	{ "submit-stale", 0, NULL, 1015 },
 	{"diff", 1, NULL, 'f'}, // compat
 	{"gpu-clock", 1, NULL, 1070},
 	{"mem-clock", 1, NULL, 1071},
@@ -727,7 +722,7 @@ static bool submit_upstream_work(CURL *curl, struct work *work)
 
 	/* discard if a newer block was received */
 	stale_work = !send_stale && (work->height && work->height < g_work.height);
-	if (have_stratum && !stale_work && !opt_submit_stale && opt_algo != ALGO_ZR5 && opt_algo != ALGO_SCRYPT_JANE) {
+	if(have_stratum && !stale_work)
 	{
 		pthread_mutex_lock(&g_work_lock);
 		if(strlen(work->job_id + 8))
@@ -3172,9 +3167,6 @@ static void parse_arg(int key, char *arg)
 		break;
 	case 1007:
 		want_stratum = false;
-		break;
-	case 1008:
-		opt_submit_stale = true;
 		break;
 	case 1011:
 		allow_gbt = false;
